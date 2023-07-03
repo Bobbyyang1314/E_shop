@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import { View, StyleSheet, ActivityIndicator, Text, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, FlatList } from 'react-native';
 
 import ProductList from './ProductList';
 
@@ -17,12 +17,13 @@ const ProductContainer = () => {
     }, [])
 
     return (
-        <View>
+        //Added style={{ backgroundColor: 'gainsboro' }}
+        <View style={{ backgroundColor: 'gainsboro' }}>
             <Text>Product Container</Text>
             <View style={{marginTop: 100}}>
                 <FlatList
-                    horizontal
                     data={products}
+                    numColumns={2}
                     renderItem={({item}) => <ProductList
                         key={item.id}
                         item={item}/>}
