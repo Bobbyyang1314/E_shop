@@ -26,11 +26,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignContent: "center",
         justifyContent: "center",
-        padding: 20,
+        padding: -20,
         marginTop: 100 // Todo: Delete
-    },
-    logo: {
-        height: 50,
     },
 })
 
