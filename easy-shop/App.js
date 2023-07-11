@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View, LogBox } from 'react-native';
 import React from 'react';
 // Added for debug
 import { NativeBaseProvider, Box } from "native-base";
@@ -8,6 +8,8 @@ import { NativeBaseProvider, Box } from "native-base";
 // Screens
 import ProductContainer from './Screens/Products/ProductContainer';
 import Header from "./Shared/Header";
+
+LogBox.ignoreAllLogs(true);
 
 export default function App() {
   return (
