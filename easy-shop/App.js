@@ -11,15 +11,14 @@ import Banner from "./Shared/Banner";
 LogBox.ignoreAllLogs(true);
 
 export default function App() {
-  return (
-      <NativeBaseProvider>
+    return (
+        <NativeBaseProvider>
             <View style={styles.container}>
-              {/*<Header/>*/}
-              {/*<Banner/>*/}
-              <ProductContainer />
+                <Header/>
+                <ProductContainer/>
             </View>
-      </NativeBaseProvider>
-  );
+        </NativeBaseProvider>
+    );
 }
 
 const styles = StyleSheet.create({
