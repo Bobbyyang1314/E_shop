@@ -5,7 +5,6 @@ import { Box, HStack, VStack, Container, Icon, Input, Text, ScrollView } from 'n
 import { KeyboardAvoidingView } from 'react-native';
 
 import ProductList from './ProductList';
-import Header from '../../Shared/Header';
 
 import { Ionicons } from "@expo/vector-icons";
 import SearchedProduct from './SearchedProduct';
@@ -17,30 +16,7 @@ const {height} = Dimensions.get('window');
 const data = require('../../assets/data/products.json');
 const productCategories = require('../../assets/data/categories.json');
 
-const ProductContainer = () => {
-
-    const SearchBar = () => {
-        <VStack space={2} alignItems="center" mt={4}>
-            <Input
-                placeholder="Search"
-                onFocus={openList}
-                onChangeText={(text) => searchProduct(text)}
-                variant="filled"
-                width="100%"
-                borderRadius="10"
-                py="1"
-                px="2"
-                InputLeftElement={
-                    <Icon ml="2" size="4" color="gray.400" as={<Ionicons name="ios-search" />} />
-                }
-                rightElement={<Text
-                    onPress={onBlur}
-                    marginRight={3}
-                    outlineColor={"black"}
-                    color={"gray.400"}>Back</Text>}
-            />
-        </VStack>
-    }
+const ProductContainer = (props) => {
 
     const [products, setProducts] = useState([]);
     const [productsFiltered, setProductsFiltered] = useState([]);
@@ -101,8 +77,7 @@ const ProductContainer = () => {
     return (
         // <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
             <Box>
-
-                {/*SearchBar*/}
+                {/*Search Bar*/}
                 <VStack space={2} alignItems="center" mt={4}>
                     <Input
                         placeholder="Search"
@@ -124,9 +99,11 @@ const ProductContainer = () => {
                     />
                 </VStack>
 
-
                 {focus === true ? (
-                    <SearchedProduct productsFiltered={productsFiltered} />
+                    <SearchedProduct
+                        navigation={props.navigation}
+                        productsFiltered={productsFiltered}
+                    />
                 ) : (
                     <ScrollView>
                         <View>
@@ -147,7 +124,8 @@ const ProductContainer = () => {
                                     {productsCtg.map((item) => {
                                         return (
                                             <ProductList
-                                                key = {item._id.$oid}
+                                                navigation={props.navigation}
+                                                key = {item.name}
                                                 item = {item}
                                             />
                                         )
@@ -161,7 +139,6 @@ const ProductContainer = () => {
                         </View>
                     </ScrollView>
                 )}
-
             </Box>
         // </KeyboardAvoidingView>
     )

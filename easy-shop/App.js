@@ -3,20 +3,31 @@ import { StyleSheet, View,LogBox } from 'react-native';
 import React from 'react';
 import { NativeBaseProvider } from "native-base";
 
+// Navigators
+import Main from './Navigators/Main'
+
 // Screens
 import ProductContainer from './Screens/Products/ProductContainer';
 import Header from "./Shared/Header";
-import Banner from "./Shared/Banner";
+
+import { NavigationContainer } from "@react-navigation/native";
+
+// Redux
+import { Provider } from "react-redux";
+import store from "./Redux/store";
 
 LogBox.ignoreAllLogs(true);
 
 export default function App() {
     return (
         <NativeBaseProvider>
-            <View style={styles.container}>
-                <Header/>
-                <ProductContainer/>
-            </View>
+            <Provider store={store}>
+                <NavigationContainer>
+                    <Header/>
+                    {/*<ProductContainer/>*/}
+                    <Main/>
+                </NavigationContainer>
+            </Provider>
         </NativeBaseProvider>
     );
 }
