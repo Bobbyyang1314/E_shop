@@ -23,7 +23,7 @@ export default function App() {
         <NativeBaseProvider>
             <Provider store={store}>
                 <NavigationContainer>
-                    <Header/>
+                    {/*<Header/>*/}
                     {/*<ProductContainer/>*/}
                     <Main/>
                 </NavigationContainer>
