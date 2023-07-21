@@ -13,17 +13,19 @@ const SearchedProduct = (props) => {
             {productsFiltered.length > 0 ? (
                 productsFiltered.map((item) => (
                     <View
-                        // onPress={navigation}
+                        onPress={() => {
+                            props.navigation.navigate('Product Detail', {item: item})
+                        }}
                         key={item._id.$oid}
                         style={{ flexDirection: 'row', alignItems: 'center' }}
                     >
                         <Image alt={"search-image"}
-                            source={{
-                                uri: item.image
-                                    ? item.image
-                                    : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
-                            }}
-                            style={{ width: 50, height: 50 }}
+                               source={{
+                                   uri: item.image
+                                       ? item.image
+                                       : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
+                               }}
+                               style={{ width: 50, height: 50 }}
                         />
                         <View style={{ marginLeft: 10 }}>
                             <Text>{item.name}</Text>
