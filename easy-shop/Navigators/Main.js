@@ -11,6 +11,7 @@ import HomeNavigator from "./HomeNavigator";
 import CartNavigator from "./CartNavigator";
 
 import CartIcon from "../Shared/CartIcon";
+import UserNavigator from "./UserNavigator";
 
 const Main = () => {
 
@@ -74,7 +75,7 @@ const Main = () => {
 
             <Tab.Screen
                 name="User"
-                component={HomeNavigator}
+                component={UserNavigator}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Icon

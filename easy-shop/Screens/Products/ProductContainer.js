@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions } from 'react-native';
 import { Box, HStack, VStack, Container, Icon, Input, Text, ScrollView } from 'native-base';
 //import { HStack, VStack, Container, Icon, Input, Text, Center, Box, Divider, Item } from "native-base";
-import { KeyboardAvoidingView } from 'react-native';
+// import { KeyboardAvoidingView } from 'react-native';
+import axios from "axios";
+import { useFocusEffect } from "@react-navigation/native";
 
 import ProductList from './ProductList';
 
@@ -11,10 +13,14 @@ import SearchedProduct from './SearchedProduct';
 import Banner from '../../Shared/Banner';
 import CategoryFilter from "./CategoryFilter";
 
+import baseURL  from "../../assets/common/baseUrl";
+
 const {height} = Dimensions.get('window');
 
-const data = require('../../assets/data/products.json');
+// const data = require('../../assets/data/products.json');
 const productCategories = require('../../assets/data/categories.json');
+
+
 
 const ProductContainer = (props) => {
 
@@ -25,26 +31,49 @@ const ProductContainer = (props) => {
     const [active, setActive] = useState();
     const [productsCtg, setProductsCtg] = useState([]);
     const [initialState, setInitialState] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        setProducts(data);
-        setProductsFiltered(data);
-        setFocus(false);
-        setCategories(productCategories);
-        setProductsCtg(data);
-        setActive(-1);
-        setInitialState(data);
+    useFocusEffect((
+        useCallback(() => {
+                setFocus(false);
+                setActive(-1);
 
-        return () => {
-            setProducts([]);
-            setProductsFiltered([]);
-            setFocus();
-            setCategories([]);
-            setActive();
-            setInitialState();
-            setProductsCtg([]);
-        }
-    }, [])
+                // Products
+                axios
+                    .get(`${baseURL}products`)
+                    .then((res) => {
+                        setProducts(res.data);
+                        setProductsFiltered(res.data);
+                        setProductsCtg(res.data);
+                        setInitialState(res.data);
+                        setLoading(false)
+                    })
+                    .catch((error) => {
+                        console.log('Api call error')
+                    })
+
+                // Categories
+                axios
+                    .get(`${baseURL}categories`)
+                    .then((res) => {
+                        setCategories(res.data)
+                    })
+                    .catch((error) => {
+                        console.log('Api call error')
+                    })
+
+                return () => {
+                    setProducts([]);
+                    setProductsFiltered([]);
+                    setFocus();
+                    setCategories([]);
+                    setActive();
+                    setInitialState();
+                };
+            },
+            [],
+        )
+    ))
 
     const searchProduct = (text) => {
         setProductsFiltered(
@@ -67,7 +96,7 @@ const ProductContainer = (props) => {
                 ? [setProductsCtg(initialState), setActive(true)]
                 : [
                     setProductsCtg(
-                        products.filter((i) => i.category.$oid === ctg),
+                        products.filter((i) => i.category._id === ctg),
                         setActive(true)
                     ),
                 ];
@@ -75,72 +104,79 @@ const ProductContainer = (props) => {
     }
 
     return (
-        // <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <Box>
-                {/*Search Bar*/}
-                <VStack space={2} alignItems="center" mt={4}>
-                    <Input
-                        placeholder="Search"
-                        onFocus={openList}
-                        onChangeText={(text) => searchProduct(text)}
-                        variant="filled"
-                        width="100%"
-                        borderRadius="10"
-                        py="1"
-                        px="2"
-                        InputLeftElement={
-                            <Icon ml="2" size="4" color="gray.400" as={<Ionicons name="ios-search" />} />
-                        }
-                        rightElement={<Text
-                            onPress={onBlur}
-                            marginRight={3}
-                            outlineColor={"black"}
-                            color={"gray.400"}>Back</Text>}
-                    />
-                </VStack>
+        <>
+            { loading === false ? (
+                <Box>
+                    {/*Search Bar*/}
+                    <VStack space={2} alignItems="center" mt={4}>
+                        <Input
+                            placeholder="Search"
+                            onFocus={openList}
+                            onChangeText={(text) => searchProduct(text)}
+                            variant="filled"
+                            width="100%"
+                            borderRadius="10"
+                            py="1"
+                            px="2"
+                            InputLeftElement={
+                                <Icon ml="2" size="4" color="gray.400" as={<Ionicons name="ios-search" />} />
+                            }
+                            rightElement={<Text
+                                onPress={onBlur}
+                                marginRight={3}
+                                outlineColor={"black"}
+                                color={"gray.400"}>Back</Text>}
+                        />
+                    </VStack>
 
-                {focus === true ? (
-                    <SearchedProduct
-                        navigation={props.navigation}
-                        productsFiltered={productsFiltered}
-                    />
-                ) : (
-                    <ScrollView>
-                        <View>
-                            <View style={styles.bannerContainer}>
-                                <Banner />
-                            </View>
-                            <View style={styles.categoryFilterContainer}>
-                                <CategoryFilter
-                                    categories={categories}
-                                    categoriesFilter={changeCtg}
-                                    productsCtg={productsCtg}
-                                    active={active}
-                                    setActive={setActive}
-                                />
-                            </View>
-                            {productsCtg.length > 0 ? (
-                                <View style={styles.listContainer}>
-                                    {productsCtg.map((item) => {
-                                        return (
-                                            <ProductList
-                                                navigation={props.navigation}
-                                                key = {item.name}
-                                                item = {item}
-                                            />
-                                        )
-                                    })}
+                    {focus === true ? (
+                        <SearchedProduct
+                            navigation={props.navigation}
+                            productsFiltered={productsFiltered}
+                        />
+                    ) : (
+                        <ScrollView>
+                            <View>
+                                <View style={styles.bannerContainer}>
+                                    <Banner />
                                 </View>
-                            ) : (
-                                <View>
-                                    <Text>No products found</Text>
+                                <View style={styles.categoryFilterContainer}>
+                                    <CategoryFilter
+                                        categories={categories}
+                                        categoriesFilter={changeCtg}
+                                        productsCtg={productsCtg}
+                                        active={active}
+                                        setActive={setActive}
+                                    />
                                 </View>
-                            )}
-                        </View>
-                    </ScrollView>
-                )}
-            </Box>
-        // </KeyboardAvoidingView>
+                                {productsCtg.length > 0 ? (
+                                    <View style={styles.listContainer}>
+                                        {productsCtg.map((item) => {
+                                            return (
+                                                <ProductList
+                                                    navigation={props.navigation}
+                                                    key = {item.name}
+                                                    item = {item}
+                                                />
+                                            )
+                                        })}
+                                    </View>
+                                ) : (
+                                    <View>
+                                        <Text>No products found</Text>
+                                    </View>
+                                )}
+                            </View>
+                        </ScrollView>
+                    )}
+                </Box>
+            ) : (
+                // Loading
+                <Container style={[styles.center, { backgroundColor: "#f2f2f2" }]}>
+                    <ActivityIndicator size="large" color="red" />
+                </Container>
+            )}
+        </>
     )
 }
 
