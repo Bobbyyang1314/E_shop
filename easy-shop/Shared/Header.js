@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignContent: "center",
         justifyContent: "center",
-        padding: -20,
-        //marginTop: 100 // Todo: Delete
+        padding: 0,
+        marginTop: -20 // Manual adjust of header height position
     },
 })
 
