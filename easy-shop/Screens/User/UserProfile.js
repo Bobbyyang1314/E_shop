@@ -42,8 +42,8 @@ const UserProfile = (props) => {
     return (
         <Box style={styles.container}>
             <ScrollView contentContainerStyle={styles.subContainer}>
-                <Text style={{ fontSize: 30 }}>
-                    {userProfile ? userProfile.name : ""}
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                    Profile
                 </Text>
                 <View style={{ marginTop: 20 }}>
                     <Text style={{ margin: 10 }}>
