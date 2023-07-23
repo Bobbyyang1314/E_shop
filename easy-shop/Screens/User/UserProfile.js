@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { View, Text, ScrollView, Button, StyleSheet } from "react-native";
-import { Container } from "native-base";
+import {Box, Container} from "native-base";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -25,16 +25,22 @@ const UserProfile = (props) => {
 
         AsyncStorage.getItem("jwt")
             .then((res) => {
-                axios.get(`${baseURL}users/${context.stateUser.user.sub}`, {
+                axios
+                    .get(`${baseURL}users/${context.stateUser.user.sub}`, {
                 headers: { Authorization: `Bearer ${res}`},
             })
                 .then((user) => setUserProfile(user.data))
             })
             .catch((error) => console.log(error))
+
+        return () => {
+            setUserProfile();
+        }
+
     }, [context.stateUser.isAuthenticated])
 
     return (
-        <Container style={styles.container}>
+        <Box style={styles.container}>
             <ScrollView contentContainerStyle={styles.subContainer}>
                 <Text style={{ fontSize: 30 }}>
                     {userProfile ? userProfile.name : ""}
@@ -54,7 +60,7 @@ const UserProfile = (props) => {
                     ]}/>
                 </View>
             </ScrollView>
-        </Container>
+        </Box>
     )
 }
 
