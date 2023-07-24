@@ -97,6 +97,7 @@ const Products = (props) => {
                             <Text numberOfLines={1} ellipsizeMode="tail">{item.category.name}</Text>
                             <Text>${item.price}</Text>
                         </View>
+                        //
                     )}
                     keyExtractor={(item) => item.id}
                 />
