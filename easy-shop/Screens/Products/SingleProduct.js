@@ -1,14 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Image, View, StyleSheet, Text, ScrollView, Button } from "react-native";
 import {Box, Container, Heading} from "native-base";
+import Toast from "react-native-toast-message";
+
+import EasyButton from "../../Shared/StyledComponents/EasyButton";
+import TrafficLight from "../../Shared/StyledComponents/TrafficLight";
 
 const SingleProduct = (props) => {
 
     const [item, setItem] = useState(props.route.params.item);
     const [availability, setAvailability] = useState(null);
+    const [availabilityText, setAvailabilityText] = useState("");
+
+    useEffect(() => {
+        if (props.route.params.item.countInStock === 0) {
+            setAvailability(<TrafficLight unavailable></TrafficLight>);
+            setAvailabilityText("Unavailable");
+        } else if (props.route.params.item.countInStock <= 5) {
+            setAvailability(<TrafficLight limited></TrafficLight>);
+            setAvailabilityText("Limited Stock");
+        } else {
+            setAvailability(<TrafficLight available></TrafficLight>);
+            setAvailabilityText("Available");
+        }
+
+        return () => {
+            setAvailability(null);
+            setAvailabilityText("");
+        }
+    }, [])
 
     return (
-        <Container style={styles.container}>
+        <Box style={styles.container}>
             <ScrollView style={{ marginBottom: 80, padding: 5 }}>
                 <View>
                     <Image
@@ -20,30 +43,57 @@ const SingleProduct = (props) => {
                         style={styles.image}
                     />
                 </View>
+
                 <View style={styles.contentContainer}>
                     <Heading style={styles.contentHeader}>{item.name}</Heading>
                     <Text style={styles.contentText}>{item.brand}</Text>
                 </View>
+
+                <View style={styles.availabilityContainer}>
+                    <View style={styles.availability}>
+                        <Text style={{ marginRight: 10 }}>
+                            Availability: {availabilityText}
+                        </Text>
+                        { availability }
+                    </View>
+                    <Text>{item.description}</Text>
+                </View>
+
             </ScrollView>
 
             <View style={styles.bottomContainer}>
-                <View style={styles.rightContainer}>
+                <View style={styles.leftContainer}>
                     <Text style={styles.price}>$ {item.price}</Text>
                 </View>
-                <View style={styles.leftContainer}>
-                    <Button title='Add'/>
+                <View style={styles.rightContainer}>
+                    <EasyButton
+                        medium
+                        primary
+                        onPress={() => {
+                            props.addItemToCart(item),
+                                Toast.show({
+                                    topOffset: 60,
+                                    type: "success",
+                                    text1: `${name} added to cart`,
+                                    text2: "Go to your cart to complete order"
+                                })
+                        }}
+                    >
+                        <Text style={{color: "white", fontWeight: "bold"}}>Add</Text>
+                    </EasyButton>
                 </View>
             </View>
-        </Container>
+
+        </Box>
     )
 }
 
 const styles = StyleSheet.create({
     leftContainer: {
-        marginRight: 'auto',
+        marginRight: 0,
     },
     rightContainer:{
-        marginLeft: 'auto',
+        marginLeft: 0,
     },
     container: {
         position: 'relative',
@@ -74,7 +124,8 @@ const styles = StyleSheet.create({
     },
     bottomContainer: {
         flexDirection: 'row',
-        position: 'absolute',
+        alignItems: "center",
+        position: 'relative',
         bottom: 0,
         left: 0,
         backgroundColor: 'white'

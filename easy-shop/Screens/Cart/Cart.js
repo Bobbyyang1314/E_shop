@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import * as actions from '../../Redux/Actions/cartActions'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
+import EasyButton from "../../Shared/StyledComponents/EasyButton";
 
 const { height, width} = Dimensions.get("window");
 const Cart = (props) => {
@@ -28,7 +29,7 @@ const Cart = (props) => {
         // </View>
         <ScrollView>
             {props.cartItems.length ? (
-                <Container>
+                <View>
                     {/*<View style={{ alignItems: "center" }}>*/}
                     {/*    <Text style={{ fontSize: 24, fontWeight: "bold" }}>Cart</Text>*/}
                     {/*</View>*/}
@@ -62,19 +63,25 @@ const Cart = (props) => {
                             <Text style={styles.price}>$ {total}</Text>
                         </View>
                         <View style={styles.rightContainer}>
-                            <Button
-                                title='Clear'
+                            <EasyButton
+                                medium
+                                danger
                                 onPress={() => props.clearCart()}
-                            />
+                            >
+                                <Text style={{color: "white", fontWeight: "bold"}}>Clear</Text>
+                            </EasyButton>
                         </View>
                         <View style={styles.rightContainer}>
-                            <Button
-                                title='Checkout'
+                            <EasyButton
+                                primary
+                                medium
                                 onPress={() => props.navigation.navigate('Checkout')}
-                            />
+                            >
+                                <Text style={{color: "white", fontWeight: "bold"}}>Checkout</Text>
+                            </EasyButton>
                         </View>
                     </View>
-                </Container>
+                </View>
             ) : (
                 <Container style={styles.emptyContainer}>
                     <Text>Looks your cart is empty</Text>
@@ -114,12 +121,11 @@ const styles = StyleSheet.create({
     },
     bottomContainer: {
         flexDirection: 'row',
-        // position: 'absolute',
-        alignItems: 'center',
+        alignItems: "center",
+        position: 'relative',
         bottom: 0,
         left: 0,
-        backgroundColor: 'white',
-        elevation: 20
+        backgroundColor: 'white'
     },
     price: {
         fontSize: 18,
