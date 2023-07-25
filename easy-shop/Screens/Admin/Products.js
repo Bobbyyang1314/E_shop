@@ -80,24 +80,11 @@ const Products = (props) => {
                 <FlatList
                     data={productFilter}
                     renderItem={({ item, index }) => (
-                        // <ListItem
-                        //     {...item}
-                        //     navigation={props.navigation}
-                        //     index={index}
-                        // />
-                        <View>
-                            <Image source={{
-                                uri: item.image
-                                    ? item.image
-                                    : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'}}
-                                   resizeMode="contain"
-                            />
-                            <Text>{item.brand}</Text>
-                            <Text numberOfLines={1} ellipsizeMode="tail">{item.name}</Text>
-                            <Text numberOfLines={1} ellipsizeMode="tail">{item.category.name}</Text>
-                            <Text>${item.price}</Text>
-                        </View>
-                        //
+                        <ListItem
+                            {...item}
+                            navigation={props.navigation}
+                            index={index}
+                        />
                     )}
                     keyExtractor={(item) => item.id}
                 />
