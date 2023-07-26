@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Ionicons} from "@expo/vector-icons";
 
 import ListItem from "./ListItem";
+import EasyButton from "../../Shared/StyledComponents/EasyButton";
 
 
 
@@ -98,7 +99,33 @@ const Products = (props) => {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
+            <View style={styles.buttonContainer}>
+                <EasyButton
+                    secondary
+                    medium
+                    onPress={() => props.navigation.navigate("Orders")}
+                >
+                    <Icon name="shopping-bag" size={18} color="white"/>
+                    <Text style={styles.buttonText}>Orders</Text>
+                </EasyButton>
+                <EasyButton
+                    secondary
+                    medium
+                    onPress={() => props.navigation.navigate("ProductForm")}
+                >
+                    <Icon name="plus" size={18} color="white"/>
+                    <Text style={styles.buttonText}>Products</Text>
+                </EasyButton>
+                <EasyButton
+                    secondary
+                    medium
+                    onPress={() => props.navigation.navigate("Categories")}
+                >
+                    <Icon name="plus" size={18} color="white"/>
+                    <Text style={styles.buttonText}>Categories</Text>
+                </EasyButton>
+            </View>
             <View>
                 <VStack space={2} alignItems="center" mt={4}>
                     <Input
@@ -109,14 +136,12 @@ const Products = (props) => {
                         borderRadius="10"
                         py="1"
                         px="2"
-                        // InputLeftElement={
-                        //     <Icon ml="2" size="4" color="gray.400" as={<Ionicons name="ios-search" />} />
-                        // }
-                        // rightElement={<Text
-                        //     onPress={onBlur}
-                        //     marginRight={3}
-                        //     outlineColor={"black"}
-                        //     color={"gray.400"}>Back</Text>}
+                        InputLeftElement={
+                            <Icon
+                                name="search"
+                                marginLeft={10}
+                                color="gray" />
+                        }
                     />
                 </VStack>
             </View>
@@ -160,6 +185,20 @@ const styles = StyleSheet.create({
         height: height / 2,
         alignItems: "center",
         justifyContent: "center"
+    },
+    container: {
+        marginBottom: 160,
+        backgroundColor: 'white'
+    },
+    buttonContainer: {
+        margin: 20,
+        alignSelf: 'center',
+        flexDirection: 'row'
+    },
+    buttonText: {
+        marginLeft: 4,
+        color: 'white',
+        fontWeight: "bold"
     }
 })
 

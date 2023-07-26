@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions } from 'react-native';
-import { Box, HStack, VStack, Container, Icon, Input, Text, ScrollView } from 'native-base';
+import { Box, HStack, VStack, Container, Input, Text, ScrollView } from 'native-base';
 //import { HStack, VStack, Container, Icon, Input, Text, Center, Box, Divider, Item } from "native-base";
 // import { KeyboardAvoidingView } from 'react-native';
 import axios from "axios";
 import { useFocusEffect } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import ProductList from './ProductList';
 
@@ -119,13 +120,16 @@ const ProductContainer = (props) => {
                             py="1"
                             px="2"
                             InputLeftElement={
-                                <Icon ml="2" size="4" color="gray.400" as={<Ionicons name="ios-search" />} />
+                                <Icon
+                                    name="search"
+                                    marginLeft={10}
+                                    color="gray" />
                             }
-                            rightElement={<Text
+                            rightElement={<Icon
+                                name="close"
                                 onPress={onBlur}
-                                marginRight={3}
-                                outlineColor={"black"}
-                                color={"gray.400"}>Back</Text>}
+                                marginRight={10}
+                                color="gray"/>}
                         />
                     </VStack>
 

@@ -5,10 +5,10 @@ const { width } = Dimensions.get("window");
 
 const FormContainer = (props) => {
     return(
-        <View contentContainerStyle={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>{props.title}</Text>
             {props.children}
-        </View>
+        </ScrollView>
     )
 }
 
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         marginBottom: 400,
         width: width,
         justifyContent: "center",
-        alignContent: "center",
+        alignContent: "center"
     },
     title: {
         fontSize: 30,
