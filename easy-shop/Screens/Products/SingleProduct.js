@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Image, View, StyleSheet, Text, ScrollView, Button } from "react-native";
 import {Box, Container, Heading} from "native-base";
+import Toast from "react-native-toast-message";
+
+import { connect } from "react-redux";
+import * as actions from '../../Redux/Actions/cartActions';
 
 const SingleProduct = (props) => {
 
@@ -31,11 +35,29 @@ const SingleProduct = (props) => {
                     <Text style={styles.price}>$ {item.price}</Text>
                 </View>
                 <View style={styles.rightContainer}>
-                    <Button title='Add' />
+                    <Button 
+                        title='Add'
+                        onPress={() => {
+                            props.addItemToCart(item),
+                                Toast.show({
+                                    topOffset: 60,
+                                    type: "success",
+                                    text1: `${item.name} added to cart`,
+                                    text2: "Go to your cart to complete order"
+                                })
+                        }} />
                 </View>
             </View>
         </Box>
     )
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addItemToCart: (product) => {
+            dispatch(actions.addToCart({quantity: 1, product}))
+        }
+    }
 }
 
 const styles = StyleSheet.create({
@@ -102,4 +124,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SingleProduct;
+export default connect(null, mapDispatchToProps)(SingleProduct);

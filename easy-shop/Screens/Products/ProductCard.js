@@ -6,7 +6,8 @@ import {
     Image,
     Text,
     Button
-} from 'react-native'
+} from 'react-native';
+import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import * as actions from '../../Redux/Actions/cartActions';
 
@@ -37,7 +38,13 @@ const ProductCard = (props) => {
                         title={'Add'}
                         color={'green'}
                         onPress={() => {
-                            props.addItemToCart(props)
+                            props.addItemToCart(props);
+                            Toast.show({
+                                topOffset: 60,
+                                type: "success",
+                                text1: `${name} added to cart`,
+                                text2: "Go to your cart to complete order"
+                            });
                         }}
                     />
                 </View>
