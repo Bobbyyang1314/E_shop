@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import {Dimensions, StyleSheet, Image, Button, TouchableOpacity, ScrollView} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Container, Text, View} from "native-base";
 import { SwipeListView } from "react-native-swipe-list-view";
 import CartItem from "./CartItem";
@@ -81,7 +81,7 @@ const Cart = (props) => {
                                     medium
                                     onPress={() => props.navigation.navigate('Checkout')}
                                 >
-                                    <Text style={{color: "white", fontWeight: "bold"}}>Checkout</Text>
+                                    <Text style={{ color: 'white' }}>Checkout</Text>
                                 </EasyButton>
                             ) : (
                                 <EasyButton
@@ -89,7 +89,7 @@ const Cart = (props) => {
                                     medium
                                     onPress={() => props.navigation.navigate('Login')}
                                 >
-                                    <Text style={{color: "white", fontWeight: "bold"}}>Login</Text>
+                                    <Text style={{ color: 'white' }}>Login</Text>
                                 </EasyButton>
                             )}
 

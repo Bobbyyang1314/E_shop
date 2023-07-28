@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {View, Text, Image, TouchableOpacity, StyleSheet, Platform, ScrollView} from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import {Picker} from '@react-native-picker/picker';
 import {Box, Select} from "native-base";
 
 import FormContainer from "../../Shared/Form/FormContainer";
@@ -12,6 +13,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import baseURL from "../../assets/common/baseUrl";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
+import mime from "mime";
+
+// const mime = require("mime")
 
 
 
@@ -51,9 +55,10 @@ const ProductForm = (props) => {
             setCountInStock(props.route.params.item.countInStock.toString());
         }
 
+        // Set authenthetic
         AsyncStorage.getItem("jwt")
             .then((res) => {
-            setToken(res)
+                setToken(res)
             })
             .catch((error) => console.log(error))
 
@@ -62,7 +67,7 @@ const ProductForm = (props) => {
         axios
             .get(`${baseURL}categories`)
             .then((res) => setCategories(res.data))
-            .catch((error) => console.log("Error to load categories"));
+            .catch((error) => alert("Error to load categories"));
 
         // Image Picker
             (async () => {
@@ -74,7 +79,7 @@ const ProductForm = (props) => {
                         alert("Sorry, we need camera roll permissions to make this work")
                     }
                 }
-            })
+            })();
 
         return () => {
             setCategories([])
@@ -88,19 +93,34 @@ const ProductForm = (props) => {
             aspect: [4, 3],
             quality: 1
         });
+
+        console.log("Image Picker Result:", result);
         if (!result.canceled) {
             setMainImage(result.uri);
-            setImage(result.uri)
+            // setImage(result.uri)
+            setImage(result.uri.replace("file://", ""));
         }
-    }
+    };
 
     const addProduct = () => {
+        console.log("image", image)
         if (name === "" || brand === "" || price === "" || description === "" || category === "" || countInStock === "") {
             setError("Please fill in the form correctly")
         }
 
         let formData = new FormData();
 
+        const newImageUri = "file:///" + image.split("file:/").join("");
+
+        formData.append("image", {
+            uri: newImageUri,
+            type: mime.getType(newImageUri),
+            name: newImageUri.split("/").pop()
+        });
+
+        // console.log("Image FormData:", formData.get("image"));
+
+        // formData.append("image", image);
         formData.append("name", name);
         formData.append("brand", brand);
         formData.append("price", price);
@@ -236,7 +256,25 @@ const ProductForm = (props) => {
                 value={description}
                 onChangeText={(text) => setDescription(text)}
             />
-            <View>
+            {/*<Box>*/}
+            {/*    <Select*/}
+            {/*        mode="dropdown"*/}
+            {/*        iosIcon={<Icon name="arrow-down" color={"#007aff"} />}*/}
+            {/*        style={{ width: undefined }}*/}
+            {/*        selectedValue={pickerValue}*/}
+            {/*        placeholder="Select your category"*/}
+            {/*        placeholderStyle={{ color: '#007aff' }}*/}
+            {/*        placeholderIconColor="#007aff"*/}
+            {/*        onValueChange={(e) => [setPickerValue(e), setCategory(e)]}*/}
+            {/*    >*/}
+            {/*        {categories.map((c) => {*/}
+            {/*            return <Select.Item key={c.code} label={c.name} value={c.id} />*/}
+            {/*        })}*/}
+            {/*    </Select>*/}
+            {/*</Box>*/}
+
+
+            <Box>
                 <Select
                     mode="dropdown"
                     iosIcon={<Icon name="arrow-down" color={"#007aff"} />}
@@ -248,10 +286,14 @@ const ProductForm = (props) => {
                     onValueChange={(e) => [setPickerValue(e), setCategory(e)]}
                 >
                     {categories.map((c) => {
-                        return <Select.Item key={c.id} label={c.name} value={c.id} />
+                        return <Select.Item
+                            key={c.id}
+                            label={c.name}
+                            value={c.name}
+                        />
                     })}
                 </Select>
-            </View>
+            </Box>
 
             { err ? <Error message={err} /> : null}
             <View style={styles.buttonContainer}>
