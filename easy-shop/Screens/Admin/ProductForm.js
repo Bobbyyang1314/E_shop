@@ -55,7 +55,7 @@ const ProductForm = (props) => {
             setCountInStock(props.route.params.item.countInStock.toString());
         }
 
-        // Set authenthetic
+        // Set authentic
         AsyncStorage.getItem("jwt")
             .then((res) => {
                 setToken(res)
@@ -70,22 +70,24 @@ const ProductForm = (props) => {
             .catch((error) => alert("Error to load categories"));
 
         // Image Picker
-            (async () => {
-                if (Platform.OS !== "web") {
-                    const {
-                        status,
-                    } = await ImagePicker.requestCameraPermissionsAsync();
-                    if (status !== "granted") {
-                        alert("Sorry, we need camera roll permissions to make this work")
-                    }
+        (async () => {
+            if (Platform.OS !== "web") {
+                const {
+                    status,
+                } = await ImagePicker.requestCameraPermissionsAsync();
+                if (status !== "granted") {
+                    alert("Sorry, we need camera roll permissions to make this work")
                 }
-            })();
+            }
+        })();
 
         return () => {
             setCategories([])
         }
     }, []);
 
+
+    // https://docs.expo.dev/versions/latest/sdk/imagepicker/
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -93,17 +95,18 @@ const ProductForm = (props) => {
             aspect: [4, 3],
             quality: 1
         });
-
-        console.log("Image Picker Result:", result);
+        console.log("sss", result.assets[0].uri)
         if (!result.canceled) {
-            setMainImage(result.uri);
-            // setImage(result.uri)
-            setImage(result.uri.replace("file://", ""));
+
+            setMainImage(result.assets[0].uri);
+            setImage(result.assets[0].uri)
+
+            // setImage(result.uri.replace("file:///", ""));
         }
     };
 
     const addProduct = () => {
-        console.log("image", image)
+        console.log("imagess", image)
         if (name === "" || brand === "" || price === "" || description === "" || category === "" || countInStock === "") {
             setError("Please fill in the form correctly")
         }
