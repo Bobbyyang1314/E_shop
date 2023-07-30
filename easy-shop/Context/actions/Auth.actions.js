@@ -55,16 +55,15 @@ export const loginUser = async (user, dispatch) => {
         });
 
         const data = await response.json();
-        console.log(typeof data.token);
+        // console.log(typeof data.token);
 
         if (data) {
             const token = data.token;
-            console.log(token === null ? "A" : token);
-
+            // console.log(token === null ? "A" : token);
             await AsyncStorage.setItem("jwt", token);
             const decoded = jwt_decode(token);
             dispatch(setCurrentUser(decoded, user));
-            console.log("duu");
+            // console.log("duu");
             console.log('Data saved successfully.');
         } else {
             logoutUser(dispatch);
@@ -94,12 +93,17 @@ export const loginUser = async (user, dispatch) => {
 //         .then((data) => console.log(data));
 // }
 
-export const logoutUser = (dispatch) => {
-    AsyncStorage.removeItem("jwt").then(() => {
+export const logoutUser = async (dispatch) => {
+    try {
+        await AsyncStorage.removeItem("jwt");
         console.log('Data removed successfully.');
-    })
-    dispatch(setCurrentUser({}))
-}
+        console.log(await AsyncStorage.getItem("jwt")); // This should now show null
+        dispatch(setCurrentUser({}));
+    } catch (error) {
+        console.log('Error removing data:', error);
+    }
+};
+
 
 export const setCurrentUser = (decoded, user) => {
     return {

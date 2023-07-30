@@ -11,6 +11,7 @@ import {Ionicons} from "@expo/vector-icons";
 
 import ListItem from "./ListItem";
 import EasyButton from "../../Shared/StyledComponents/EasyButton";
+import Toast from "react-native-toast-message";
 
 
 
@@ -53,6 +54,7 @@ const Products = (props) => {
         useCallback(
             () => {
                 // Get Token
+                console.log(typeof (AsyncStorage.getItem("jwt")))
                 AsyncStorage.getItem("jwt")
                     .then((res) => {
                         setToken(res);
@@ -79,23 +81,38 @@ const Products = (props) => {
         if (text === "") {
             setProductFilter(productList);
         }
-        setProductFilter(
+        else setProductFilter(
             productList.filter((i) => {
-                i.name.toLowerCase().includes(text.toLowerCase())
+                i.name.toLowerCase().startsWith(text.toLowerCase())
             })
         )
     }
 
     const deleteProduct = (id) => {
+
+        {
+            id === null ? console.log("A") : console.log("B")
+        }
+        console.log(`${baseURL}products/${id}`) // Log the value of id to the console
         axios
             .delete(`${baseURL}products/${id}`, {
-                headers: { Authorization: `Bearer ${token}`},
+                headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => {
-                const products = productFilter.filter((item) => item.id !== id)
-                setProductFilter(products)
+                const products = productFilter.filter((item) => item.id !== id);
+                setProductFilter(products);
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                console.log(error); // Log the error for debugging purposes
+
+                // Display a user-friendly error message using a toast or alert
+                // For example, using Toast:
+                Toast.show({
+                    type: "error",
+                    text1: "Something went wrong",
+                    text2: "Please try again later",
+                });
+            });
     }
 
     return (

@@ -16,7 +16,7 @@ const SearchedProduct = (props) => {
                         onPress={() => {
                             props.navigation.navigate('Product Detail', {item: item})
                         }}
-                        key={item._id.$oid}
+                        key={item._id}
                         style={{ flexDirection: 'row', alignItems: 'center' }}
                     >
                         <Image alt={"search-image"}

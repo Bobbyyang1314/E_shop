@@ -15,25 +15,16 @@ const UserProfile = (props) => {
     const context = useContext(AuthGlobal);
     const [userProfile, setUserProfile] = useState();
 
-    // 一秒后执行的代码
-    // function delayedCode() {
-    //     console.log("一秒后执行的代码");
-    // }
-
-// 延迟一秒后执行
     useEffect( () => {
-        console.log("Denngu")
+        // console.log("Denngu")
         if (
             context.stateUser.isAuthenticated === false ||
             context.stateUser.isAuthenticated === null
         ) {
-            console.log("Denngwwu")
+            // console.log("Denngwwu")
             props.navigation.navigate("Login");
         }
-        // console.log(JSON.parse(AsyncStorage.getItem("jwt")))
-
-
-        const userStr = AsyncStorage.getItem('jwt');
+        // const userStr = AsyncStorage.getItem('jwt');
         // console.log(userStr)
         // console.log(JSON.parse(userStr))
         // const user = JSON.parse(userStr).token;
@@ -41,28 +32,26 @@ const UserProfile = (props) => {
 
         let jwt = ""
         async function fetchData() {
+            // try {
             try {
-                try {
-                    jwt = await AsyncStorage.getItem("jwt");
-                    console.log(jwt);
-                } catch (error) {
-                    console.log(error);
-                }
-                console.log(context.stateUser.user.userId);
-                console.log(baseURL + "users/" + context.stateUser.user.userId);
-                const user = await axios.get(baseURL + "users/" + context.stateUser.user.userId, {
-                    headers: { Authorization: `Bearer ${jwt}` },
-                });
-                setUserProfile(user.data);
-                console.log("Finish");
+                jwt = await AsyncStorage.getItem("jwt");
+                // console.log(jwt);
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
+            // console.log(context.stateUser.user.userId);
+            // console.log(baseURL + "users/" + context.stateUser.user.userId);
+            const user = await axios.get(baseURL + "users/" + context.stateUser.user.userId, {
+                headers: { Authorization: `Bearer ${jwt}` },
+            });
+            setUserProfile(user.data);
+            // console.log("Finish");
+            // } catch (error) {
+            //     console.log(error);
+            // }
         }
 
-        fetchData().then(r => console.log("Nothing"));
-        console.log("user");
-
+        fetchData().then(r => console.log("Get the jwt token: ", jwt));
 
         return () => {
             setUserProfile();

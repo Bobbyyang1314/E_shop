@@ -11,9 +11,9 @@ import axios from "axios";
 import baseURL from "../assets/common/baseUrl";
 
 const codes = [
-    { name: "pending", code: "3" },
-    { name: "shipped", code: "2" },
-    { name: "delivered", code: "1" },
+    { name: "Pending", code: "3" },
+    { name: "Shipped", code: "2" },
+    { name: "Delivered", code: "1" },
 ];
 
 const OrderCard = (props) => {
@@ -136,7 +136,10 @@ const OrderCard = (props) => {
                                 );
                             })}
                         </Select>
-                        <EasyButton secondary large onPress={() => updateOrder()}>
+                        <EasyButton
+                            secondary
+                            large
+                            onPress={() => updateOrder()}>
                             <Text style={{ color: "white" }}>Update</Text>
                         </EasyButton>
                     </View>

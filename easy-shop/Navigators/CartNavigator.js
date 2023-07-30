@@ -10,7 +10,8 @@ function MyStack() {
     return(
         <Stack.Navigator>
             <Stack.Screen
-                name="Cart"
+                // name="Cart"
+                name="Shopping Cart"
                 component={Cart}
                 options={{
                     headerShown: false

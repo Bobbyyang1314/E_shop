@@ -15,8 +15,6 @@ import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import mime from "mime";
 
-// const mime = require("mime")
-
 
 
 const ProductForm = (props) => {
@@ -56,6 +54,7 @@ const ProductForm = (props) => {
         }
 
         // Set authentic
+        console.log("XHao")
         AsyncStorage.getItem("jwt")
             .then((res) => {
                 setToken(res)
@@ -289,14 +288,17 @@ const ProductForm = (props) => {
                     onValueChange={(e) => [setPickerValue(e), setCategory(e)]}
                 >
                     {categories.map((c) => {
-                        return <Select.Item
-                            key={c.id}
-                            label={c.name}
-                            value={c.name}
-                        />
+                        return (
+                            <Select.Item
+                                key={c.id} // Add the "key" prop with a unique value (in this case, c.id)
+                                label={c.name}
+                                value={c.name}
+                            />
+                        );
                     })}
                 </Select>
             </Box>
+
 
             { err ? <Error message={err} /> : null}
             <View style={styles.buttonContainer}>

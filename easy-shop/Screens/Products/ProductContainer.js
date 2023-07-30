@@ -1,27 +1,17 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions } from 'react-native';
-import { Box, HStack, VStack, Container, Input, Text, ScrollView } from 'native-base';
-//import { HStack, VStack, Container, Icon, Input, Text, Center, Box, Divider, Item } from "native-base";
-// import { KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Box, VStack, Container, Input, Text, ScrollView } from 'native-base';
 import axios from "axios";
 import { useFocusEffect } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import ProductList from './ProductList';
 
-import { Ionicons } from "@expo/vector-icons";
 import SearchedProduct from './SearchedProduct';
 import Banner from '../../Shared/Banner';
 import CategoryFilter from "./CategoryFilter";
 
 import baseURL  from "../../assets/common/baseUrl";
-
-const {height} = Dimensions.get('window');
-
-// const data = require('../../assets/data/products.json');
-const productCategories = require('../../assets/data/categories.json');
-
-
 
 const ProductContainer = (props) => {
 
@@ -91,18 +81,31 @@ const ProductContainer = (props) => {
         setFocus(false);
     }
 
+    // const changeCtg = (ctg) => {
+    //     {
+    //         ctg === 'all'
+    //             ? [setProductsCtg(initialState), setActive(true)]
+    //             : [
+    //                 setProductsCtg(
+    //                     products.filter((i) => i.category._id === ctg),
+    //                     setActive(true)
+    //                 ),
+    //             ];
+    //     }
+    // }
+
     const changeCtg = (ctg) => {
-        {
-            ctg === 'all'
-                ? [setProductsCtg(initialState), setActive(true)]
-                : [
-                    setProductsCtg(
-                        products.filter((i) => i.category._id === ctg),
-                        setActive(true)
-                    ),
-                ];
-        }
-    }
+        ctg === 'all'
+            ? (
+                setProductsCtg(initialState),
+                    setActive(true)
+            )
+            : (
+                setProductsCtg(products.filter((i) => i.category._id === ctg)),
+                    setActive(true)
+            );
+    };
+
 
     return (
         <>
