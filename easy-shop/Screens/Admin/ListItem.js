@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Image, TouchableHighlight, TouchableOpacity, Dimensions, Button, Modal } from "react-native";
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, Modal } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"
 import EasyButton from "../../Shared/StyledComponents/EasyButton";
 
@@ -48,7 +48,7 @@ const ListItem = (props) => {
                         <EasyButton
                             medium
                             danger
-                            onPress={() => [props.delete(props._id), setModalVisible(false)]}
+                            onPress={() => [props.delete(props.id), setModalVisible(false)]}
                         >
                             <Text style={styles.textStyle}>Delete</Text>
                         </EasyButton>
