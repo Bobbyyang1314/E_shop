@@ -164,7 +164,7 @@ const ProductForm = (props) => {
 
 
         // console.log(token)
-        console.log(item.id)
+        // console.log(item.id)
         // console.log(`${baseURL}products/${item.id}`)
         // console.log(formData.getAll())
         // console.log((JSON.stringify(item)))
@@ -207,6 +207,7 @@ const ProductForm = (props) => {
                     })
                 })
         } else {
+            console.log(category)
             axios
                 .post(`${baseURL}products`, {
                     "image": image,
