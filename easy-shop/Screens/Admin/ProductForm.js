@@ -40,8 +40,11 @@ const ProductForm = (props) => {
     useEffect(() => {
 
         if(!props.route.params) {
+            console.log("A")
             setItem(null);
         } else {
+            console.log("B")
+            console.log(JSON.stringify(props.route.params.item.category))
             setItem(props.route.params.item);
             setBrand(props.route.params.item.brand);
             setName(props.route.params.item.name);
@@ -49,24 +52,32 @@ const ProductForm = (props) => {
             setDescription(props.route.params.item.description);
             setMainImage(props.route.params.item.image);
             setImage(props.route.params.item.image);
-            setCategory(props.route.params.item.category._id);
+            setCategory(props.route.params.item.category);
             setCountInStock(props.route.params.item.countInStock.toString());
         }
 
         // Set authentic
         console.log("XHao")
+        console.log(item)
+
         AsyncStorage.getItem("jwt")
             .then((res) => {
                 setToken(res)
+                console.log("token", res)
             })
             .catch((error) => console.log(error))
 
 
+
         // Categories
+
         axios
             .get(`${baseURL}categories`)
-            .then((res) => setCategories(res.data))
+            .then((res) => {
+                //console.log(res.data)
+                setCategories(res.data)})
             .catch((error) => alert("Error to load categories"));
+
 
         // Image Picker
         (async () => {
@@ -110,40 +121,70 @@ const ProductForm = (props) => {
             setError("Please fill in the form correctly")
         }
 
-        let formData = new FormData();
+        // let formData = new FormData();
 
-        const newImageUri = "file:///" + image.split("file:/").join("");
+        // const newImageUri = "file:///" + image.split("file:/").join("");
 
-        formData.append("image", {
-            uri: newImageUri,
-            type: mime.getType(newImageUri),
-            name: newImageUri.split("/").pop()
-        });
+        // formData.append("image", {
+        //     uri: image,
+        //     type: mime.getType(image),
+        //     name: image.split("/").pop()
+        // });
 
         // console.log("Image FormData:", formData.get("image"));
 
         // formData.append("image", image);
-        formData.append("name", name);
-        formData.append("brand", brand);
-        formData.append("price", price);
-        formData.append("description", description);
-        formData.append("category", category);
-        formData.append("countInStock", countInStock);
-        formData.append("richDescription", richDescription);
-        formData.append("rating", rating);
-        formData.append("numReviews", numReviews);
-        formData.append("isFeatured", isFeatured);
+        // console.log(typeof (brand))
+        // formData.append("name", name);
+        // formData.append("brand", brand);
+        // // console.log(formData.getAll())
+        // formData.append("price", price);
+        // formData.append("description", description);
+        // formData.append("category", category);
+        // formData.append("countInStock", countInStock);
+        // formData.append("richDescription", richDescription);
+        // formData.append("rating", rating);
+        // formData.append("numReviews", numReviews);
+        // formData.append("isFeatured", isFeatured);
+
 
         const config = {
             headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
             }
         }
 
+        // const parser = new DOMParser();
+        // const xmlDoc = parser.parseFromString(item, 'text/xml');
+        // const titleElement = xmlDoc.querySelector('brand');
+        // console.log(titleElement.textContent);
+
+
+
+
+        // console.log(token)
+        console.log(item.id)
+        // console.log(`${baseURL}products/${item.id}`)
+        // console.log(formData.getAll())
+        // console.log((JSON.stringify(item)))
         if (item !== null) {
+            console.log(category)
+
             axios
-                .put(`${baseURL}products/${item.id}`, formData, config)
+                .put(`${baseURL}products/${item.id}`, {
+                    "image": image,
+                    "name":name,
+                    "brand":brand,
+                    "price": price,
+                    "description": description,
+                    "category": category,
+                    "countInStock": countInStock,
+                    "richDescription": richDescription,
+                    "rating": rating,
+                    "numReviews": numReviews,
+                    "isFeatured": isFeatured,
+                }, config)
                 .then((res) => {
                     if (res.status === 200 || res.status === 201) {
                         Toast.show({
@@ -167,7 +208,19 @@ const ProductForm = (props) => {
                 })
         } else {
             axios
-                .post(`${baseURL}products`, formData, config)
+                .post(`${baseURL}products`, {
+                    "image": image,
+                    "name":name,
+                    "brand":brand,
+                    "price": price,
+                    "description": description,
+                    "category": category,
+                    "countInStock": countInStock,
+                    "richDescription": richDescription,
+                    "rating": rating,
+                    "numReviews": numReviews,
+                    "isFeatured": isFeatured
+                }, config)
                 .then((res) => {
                     if (res.status === 200 || res.status === 201) {
                         Toast.show({
