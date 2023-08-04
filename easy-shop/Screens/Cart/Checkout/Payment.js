@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Text, Button, StyleSheet, TouchableOpacity} from 'react-native';
 import {Container, View, Icon, Box, Radio, Select, Pressable, HStack} from "native-base";
+import countries from "../../../assets/data/003 countries.json";
 
 const methods = [
     { name: 'Cash on Delivery', value: 1 },
@@ -35,7 +36,12 @@ const Payment = (props) => {
                                         <Text style={{ padding: 8 }}>{item.name}</Text>
                                     </View>
                                     <View style={styles.rightContainer}>
-                                        <Radio selected={selected === item.value}/>
+                                        <Radio.Group
+                                            onChange={(value) => setSelected(value)}
+                                            value={selected}
+                                         name="radio">
+                                            <Radio value={item.value} />
+                                        </Radio.Group>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -43,22 +49,25 @@ const Payment = (props) => {
                     })}
 
                     {selected === 3 ? (
-                        <Select
-                            mode="dropdown"
-                            iosIcon={<Icon name={"arrow-down"} />}
-                            headerStyle={{ backgroundColor: 'orange' }}
-                            headerBackButtonTextStyle={{ color: '#fff' }}
-                            headerTitleStyle={{ color: '#fff' }}
-                            selectedValue={card}
-                            onValueChange={(x) => setCard(x)}
-                        >
-                            {paymentCards.map((c, index) => {
-                                return <Select.Item
-                                    key={c.name}
-                                    label={c.name}
-                                    value={c.name} />
-                            })}
-                        </Select>
+                        <Box>
+                            <Select
+                                mode="dropdown"
+                                iosIcon={<Icon name={"arrow-down"} />}
+                                style={{ width: undefined }}
+                                headerStyle={{ backgroundColor: 'orange' }}
+                                placeholder="Select your country"
+                                headerBackButtonTextStyle={{ color: '#007aff' }}
+                                selectedValue={card}
+                                onValueChange={(x) => setCard(x)}
+                            >
+                                {paymentCards.map((c, index) => {
+                                    return <Select.Item
+                                        key={c.id}
+                                        label={c.name}
+                                        value={c.name} />
+                                })}
+                            </Select>
+                        </Box>
                     ) : null }
 
                     <View style={{ marginTop: 60, alignSelf: 'center' }}>

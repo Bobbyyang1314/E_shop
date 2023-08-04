@@ -13,8 +13,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import baseURL from "../../assets/common/baseUrl";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
-import mime from "mime";
-
 
 
 const ProductForm = (props) => {

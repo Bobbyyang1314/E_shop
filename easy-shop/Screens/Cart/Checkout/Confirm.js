@@ -1,6 +1,6 @@
 import React from "react";
 import {View, StyleSheet, Dimensions, ScrollView, Button} from 'react-native';
-import {Text, Box, VStack, HStack, Image} from "native-base";
+import {Text, VStack, HStack, Image} from "native-base";
 
 import { connect } from "react-redux";
 import * as actions from "../../../Redux/Actions/cartActions";
@@ -13,10 +13,11 @@ const Confirm = (props) => {
 
     const finalOrder = props.route.params;
 
+
     const confirmOrder = () => {
 
         const order = finalOrder.order.order;
-
+        console.log(order.dateOrdered)
         axios
             .post(`${baseURL}orders`, order)
             .then((res) => {
@@ -29,7 +30,7 @@ const Confirm = (props) => {
                     });
                     setTimeout(() => {
                         props.clearCart();
-                        props.navigation.navigate("Cart");
+                        props.navigation.navigate("Shopping Cart");
                     }, 500);
                 }
             })
