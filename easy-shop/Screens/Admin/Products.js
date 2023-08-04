@@ -10,6 +10,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Ionicons} from "@expo/vector-icons";
 
 import ListItem from "./ListItem";
+import EasyButton from "../../Shared/StyledComponents/EasyButton";
+import Toast from "react-native-toast-message";
 
 
 const { height, width } = Dimensions.get("window");
@@ -76,16 +78,74 @@ const Products = (props) => {
     const searchProduct = (text) => {
         if (text === "") {
             setProductFilter(productList);
+        } else {
+            let list = []
+            productList.map((item) => {
+                if (item.name.toLowerCase().startsWith(text.toLowerCase())) {
+                    list.push(item);
+                }
+            });
+            setProductFilter(list)
         }
-        setProductFilter(
-            productList.filter((i) => {
-                i.name.toLowerCase().includes(text.toLowerCase())
+
+        console.log(productList)
+    }
+
+    const deleteProduct = (id) => {
+
+        {
+            id === null ? console.log("A") : console.log("B")
+        }
+        console.log(`${baseURL}products/${id}`) // Log the value of id to the console
+        axios
+            .delete(`${baseURL}products/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
             })
-        )
+            .then((res) => {
+                const products = productFilter.filter((item) => item.id !== id);
+                setProductFilter(products);
+            })
+            .catch((error) => {
+                console.log(error); // Log the error for debugging purposes
+
+                // Display a user-friendly error message using a toast or alert
+                // For example, using Toast:
+                Toast.show({
+                    type: "error",
+                    text1: "Something went wrong",
+                    text2: "Please try again later",
+                });
+            });
     }
 
     return (
-        <View>
+        <View style={styles.container}>
+            <View style={styles.buttonContainer}>
+                <EasyButton
+                    secondary
+                    medium
+                    onPress={() => props.navigation.navigate("Orders")}
+                >
+                    <Icon name="shopping-bag" size={18} color="white"/>
+                    <Text style={styles.buttonText}>Orders</Text>
+                </EasyButton>
+                <EasyButton
+                    secondary
+                    medium
+                    onPress={() => props.navigation.navigate("ProductForm")}
+                >
+                    <Icon name="plus" size={18} color="white"/>
+                    <Text style={styles.buttonText}>Products</Text>
+                </EasyButton>
+                <EasyButton
+                    secondary
+                    medium
+                    onPress={() => props.navigation.navigate("Categories")}
+                >
+                    <Icon name="plus" size={18} color="white"/>
+                    <Text style={styles.buttonText}>Categories</Text>
+                </EasyButton>
+            </View>
             <View>
                 <VStack space={2} alignItems="center" mt={4}>
                     <Input
@@ -120,6 +180,7 @@ const Products = (props) => {
                             {...item}
                             navigation={props.navigation}
                             index={index}
+                            delete={deleteProduct}
                         />
                     )}
                     keyExtractor={(item) => item.id}
@@ -146,6 +207,20 @@ const styles = StyleSheet.create({
         height: height / 2,
         alignItems: "center",
         justifyContent: "center"
+    },
+    container: {
+        marginBottom: 160,
+        backgroundColor: 'white'
+    },
+    buttonContainer: {
+        margin: 20,
+        alignSelf: 'center',
+        flexDirection: 'row'
+    },
+    buttonText: {
+        marginLeft: 4,
+        color: 'white',
+        fontWeight: "bold"
     }
 })
 

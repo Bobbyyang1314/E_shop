@@ -75,7 +75,7 @@ const SingleProduct = (props) => {
                                 Toast.show({
                                     topOffset: 60,
                                     type: "success",
-                                    text1: `${name} added to cart`,
+                                    text1: `${item.name} added to cart`,
                                     text2: "Go to your cart to complete order"
                                 })
                         }}
