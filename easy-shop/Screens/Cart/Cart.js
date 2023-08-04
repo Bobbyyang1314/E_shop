@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import * as actions from '../../Redux/Actions/cartActions'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
+import EasyButton from "../../Shared/StyledComponents/EasyButton";
 
 const { height, width} = Dimensions.get("window");
 const Cart = (props) => {
@@ -61,16 +62,22 @@ const Cart = (props) => {
                     <Text style={styles.price}>$ {total}</Text>
                 </View>
                 <View style={styles.rightContainer}>
-                    <Button
-                        title='Clear'
+                    <EasyButton
+                        danger
+                        medium
                         onPress={() => props.clearCart()}
-                    />
+                    >
+                        <Text style={{color: "white", fontWeight: "bold"}}>Clear</Text>
+                    </EasyButton>
                 </View>
                 <View style={styles.rightContainer}>
-                    <Button
-                        title='Checkout'
+                    <EasyButton
+                        primary
+                        medium
                         onPress={() => props.navigation.navigate('Checkout')}
-                    />
+                    >
+                        <Text style={{color: "white", fontWeight: "bold"}}>Checkout</Text>
+                    </EasyButton>
                 </View>
             </View>
         </Box>
