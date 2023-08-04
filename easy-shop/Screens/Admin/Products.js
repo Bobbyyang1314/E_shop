@@ -80,12 +80,17 @@ const Products = (props) => {
     const searchProduct = (text) => {
         if (text === "") {
             setProductFilter(productList);
+        } else {
+            let list = []
+            productList.map((item) => {
+                if (item.name.toLowerCase().startsWith(text.toLowerCase())) {
+                    list.push(item);
+                }
+            });
+            setProductFilter(list)
         }
-        else setProductFilter(
-            productList.filter((i) => {
-                i.name.toLowerCase().startsWith(text.toLowerCase())
-            })
-        )
+
+        console.log(productList)
     }
 
     const deleteProduct = (id) => {

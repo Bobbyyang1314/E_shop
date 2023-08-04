@@ -4,6 +4,7 @@ import EasyButton from "../../Shared/StyledComponents/EasyButton"
 import baseURL from "../../assets/common/baseUrl";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
 
 const { width } = Dimensions.get("window")
@@ -77,7 +78,18 @@ const Categories = (props) => {
             .delete(`${baseURL}categories/${id}`, config)
             .then((res) => {
                 const newCategories = categories.filter((item) => item.id !== id);
-                setCategories(newCategories);
+                setCategories(newCategories)
+                if (res.status === 200 || res.status === 201) {
+                    Toast.show({
+                        topOffset: 60,
+                        type: "success",
+                        text1: "Order Deleted",
+                        text2: "",
+                    });
+                    setTimeout(() => {
+                        props.navigation.navigate("Products");
+                    }, 500);
+                }
             })
             .catch((error) => alert("Error to load categories"));
     }
